@@ -14,6 +14,7 @@ export default withNuxt(antfu(
       semi: true,
       quotes: undefined,
     },
+    ignores: ['.pnpm-store/**'],
   },
   {
     rules: {
