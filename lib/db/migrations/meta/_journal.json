@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1746539487425,
-      "tag": "0000_giant_the_liberteens",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1746551882124,
-      "tag": "0001_colorful_warlock",
+      "when": 1746857853094,
+      "tag": "0000_cuddly_wind_dancer",
       "breakpoints": true
     }
   ]
