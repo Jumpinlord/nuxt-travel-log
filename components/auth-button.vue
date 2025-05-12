@@ -3,15 +3,6 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-  <!-- <div v-if="!authStore.loading && authStore.user" class="dropdown">
-    <div tabindex="0" role="button" class="btn m-1">
-      {{ authStore.user.name }}
-    </div>
-    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-      <li><a>Item 1</a></li>
-      <li><a>Item 2</a></li>
-    </ul>
-  </div> -->
   <div v-if="!authStore.loading && authStore.user">
     <button class="btn" popovertarget="popover-signin" style="anchor-name:--anchor-signin">
       <div v-if="authStore.user.image" class="avatar">
