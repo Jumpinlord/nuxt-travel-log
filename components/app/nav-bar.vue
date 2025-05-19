@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar bg-primary text-primary-content container mx-auto">
+  <div class="navbar bg-primary text-primary-content">
     <div class="navbar-start">
       <NuxtLink to="/" class="btn btn-ghost text-xl">
         Travel Log
