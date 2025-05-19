@@ -21,7 +21,7 @@ function toggleSidebar() {
 </script>
 
 <template>
-  <div class="container mx-auto flex-1 flex">
+  <div class="flex-1 flex">
     <div :class="isSidebarOpen ? 'w-64' : 'w-16' " class="bg-base-100 transition-all duration-300">
       <div
         class="flex p-2 hover:cursor-pointer hover:bg-base-200"
@@ -67,8 +67,9 @@ function toggleSidebar() {
         />
       </div>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 flex flex-col">
       <NuxtPage />
+      <AppMap class="flex-1" />
     </div>
   </div>
 </template>
