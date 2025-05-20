@@ -19,9 +19,9 @@ onMounted(() => {
     </div>
     <div
       v-else-if="locations && locations.length > 0"
-      class="flex flex-wrap gap-2 mt-4"
+      class="flex flex-nowrap gap-2 mt-4"
     >
-      <article v-for="location in locations" :key="location.id" class="card card-compact w-72 min-h-40 bg-base-300">
+      <article v-for="location in locations" :key="location.id" class="card card-compact shrink-0 overflow-auto w-72 min-h-40 bg-base-300">
         <div class="card-body">
           <h3 class="text-xl">
             {{ location.name }}
