@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { MglEvent } from '@indoorequal/vue-maplibre-gl';
+import type { LngLat } from 'maplibre-gl';
+
 import { CENTER_CRIMEA } from '~/lib/constants';
 import { useMapStore } from '~/stores/map';
 
@@ -12,14 +15,52 @@ const style = computed(() =>
 
 const zoom = 8;
 
+function updateAddedPoint(location: LngLat) {
+  if (mapStore.addedPoint) {
+    mapStore.addedPoint.lat = location.lat;
+    mapStore.addedPoint.long = location.lng;
+  }
+}
+
+function onDoubleClick(MglEvent: MglEvent<'dblclick'>) {
+  if (mapStore.addedPoint) {
+    mapStore.addedPoint.lat = MglEvent.event.lngLat.lat;
+    mapStore.addedPoint.long = MglEvent.event.lngLat.lng;
+  }
+}
+
 onMounted(() => {
   mapStore.init();
 });
 </script>
 
 <template>
-  <MglMap :map-style="style" :center="CENTER_CRIMEA" :zoom="zoom">
+  <MglMap
+    :map-style="style"
+    :center="CENTER_CRIMEA"
+    :zoom="zoom"
+    @map:dblclick="onDoubleClick"
+  >
     <MglNavigationControl />
+    <MglMarker
+      v-if="mapStore.addedPoint"
+      draggable
+      :coordinates="[mapStore.addedPoint.long, mapStore.addedPoint.lat]"
+      @update:coordinates="updateAddedPoint"
+    >
+      <template #marker>
+        <div
+          class="tooltip tooltip-top tooltip-open hover:cursor-pointer"
+          data-tip="Drag to your desired location"
+        >
+          <Icon
+            name="tabler:map-pin-filled"
+            size="35"
+            class="text-warning"
+          />
+        </div>
+      </template>
+    </MglMarker>
     <MglMarker
       v-for="point in mapStore.mapPoints"
       :key="point.id"
@@ -27,13 +68,13 @@ onMounted(() => {
     >
       <template #marker>
         <div
-          class="tooltip tooltip-top hover:cursor-pointer"
+          class="tooltip tooltip-top tooltip-open hover:cursor-pointer"
           :data-tip="point.name"
           :class="{
             'tooltip-open': mapStore.selectedPoint === point,
           }"
-          @mouseenter="mapStore.selectedPointWithoutFlyTo(point)"
-          @mouseleave="mapStore.selectedPointWithoutFlyTo(null)"
+          @mouseenter="mapStore.selectedPoint = point"
+          @mouseleave="mapStore.selectedPoint = point"
         >
           <Icon
             name="tabler:map-pin-filled"
