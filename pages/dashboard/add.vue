@@ -3,8 +3,11 @@ import type { FetchError } from 'ofetch';
 
 import { toTypedSchema } from '@vee-validate/zod';
 
+import type { NominatimResult } from '~/lib/types';
+
 import { CENTER_CRIMEA } from '~/lib/constants';
 import { InsertLocation } from '~/lib/db/schema';
+import getFetchErrorMessage from '~/utils/get-fetch-error-message';
 
 const mapStore = useMapStore();
 const { $csrfFetch } = useNuxtApp();
@@ -38,7 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
     if (error.data?.data) {
       setErrors(error.data?.data);
     }
-    submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured.';
+    submitError.value = getFetchErrorMessage(error);
   }
   loading.value = false;
 });
@@ -47,6 +50,18 @@ function formatNumber(value?: number) {
   if (!value)
     return 0;
   return value.toFixed(4);
+}
+
+function searchResultSelected(result: NominatimResult) {
+  setFieldValue('name', result.display_name);
+  mapStore.addedPoint = {
+    id: 1,
+    name: 'Added point',
+    description: '',
+    long: Number(result.lon),
+    lat: Number(result.lat),
+    centerMap: true,
+  };
 }
 
 effect(() => {
@@ -109,15 +124,23 @@ onBeforeRouteLeave(() => {
         :error="errors.description"
         :disabled="loading"
       />
-      <p>
-        Drag the <Icon name="tabler:map-pin-filled" class="text-warning" /> marker to your desired location.
-      </p>
-      <p>
-        Or double click on the map.
-      </p>
       <p class="text-xs text-gray-400">
-        Current location: {{ formatNumber(controlledValues.lat) }}, {{ formatNumber(controlledValues.long) }},
+        Current coordinates: {{ formatNumber(controlledValues.lat) }}, {{ formatNumber(controlledValues.long) }},
       </p>
+      <p>
+        To set the coordinates:
+      </p>
+      <ul class="list-disc ml-4 text-sm">
+        <li>
+          Drag the <Icon name="tabler:map-pin-filled" class="text-warning" /> marker on the map.
+        </li>
+        <li>
+          Double click the map.
+        </li>
+        <li>
+          Search for a location below.
+        </li>
+      </ul>
       <div class="flex justify-end gap-2">
         <button :disabled="loading" type="button" class="btn btn-outline" @click="router.back()">
           <Icon name="tabler:arrow-left" size="24" />
@@ -130,5 +153,7 @@ onBeforeRouteLeave(() => {
         </button>
       </div>
     </form>
+    <div class="divider" />
+    <AppPlaceSearch @result-selected="searchResultSelected" />
   </div>
 </template>
