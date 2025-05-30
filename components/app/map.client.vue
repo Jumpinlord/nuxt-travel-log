@@ -72,7 +72,7 @@ onMounted(() => {
           class="tooltip tooltip-top tooltip-open hover:cursor-pointer"
           :data-tip="point.name"
           :class="{
-            'tooltip-open': mapStore.selectedPoint === point,
+            'tooltip-open': isPointSelected(point, mapStore.selectedPoint),
           }"
           @mouseenter="mapStore.selectedPoint = point"
           @mouseleave="mapStore.selectedPoint = point"
@@ -80,7 +80,7 @@ onMounted(() => {
           <Icon
             name="tabler:map-pin-filled"
             size="24"
-            :class="mapStore.selectedPoint === point ? 'text-secondary' : 'text-primary'"
+            :class="isPointSelected(point, mapStore.selectedPoint) ? 'text-secondary' : 'text-primary'"
           />
         </div>
       </template>
@@ -91,6 +91,15 @@ onMounted(() => {
         <p v-if="point.description">
           {{ point.description }}
         </p>
+        <div class="flex justify-end mt-4">
+          <NuxtLink
+            v-if="point.to"
+            :to="point.to"
+            class="btn btn-sm btn-outline"
+          >
+            {{ point.toLabel }}
+          </NuxtLink>
+        </div>
       </MglPopup>
     </MglMarker>
   </MglMap>
