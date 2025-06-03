@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { useLocationStore } from '~/stores/locations';
-
 const mapStore = useMapStore();
 
 const locationsStore = useLocationStore();
-const { locations, status } = storeToRefs(locationsStore);
+const { locations, locationsStatus: status } = storeToRefs(locationsStore);
 
 onMounted(() => {
-  locationsStore.refresh();
+  locationsStore.refreshLocations();
 });
 </script>
 
