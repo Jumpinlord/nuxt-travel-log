@@ -24,7 +24,7 @@ function onSubmitComplete() {
         A location is a place you have traveled or will travel to. It can be a city, country
       </p>
     </div>
-    <LocationFormAdd
+    <LocationForm
       :on-submit
       :on-submit-complete
       submit-label="Add"
