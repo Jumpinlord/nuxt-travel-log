@@ -26,7 +26,7 @@ function onSubmitComplete() {
   <div>
     <h2>Location Log Add Page!</h2>
     <LocationForm
-      v-if="locationStore.currentLocationStatus !== 'pending'"
+      v-if="locationStore.currentLocationStatus !== 'pending' && locationStore.currentLocation"
       :on-submit
       :on-submit-complete
       :initial-values="locationStore.currentLocation"
